@@ -51,9 +51,17 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
+    	mysqli \
+    	pdo_mysql \
     ;
 
 ###> recipes ###
+###> doctrine/doctrine-bundle ###
+RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
+	docker-php-ext-install -j"$(nproc)" pdo_pgsql; \
+	apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
+	apk del .pgsql-deps
+###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -100,6 +108,9 @@ RUN set -eux; \
 		composer run-script --no-dev post-install-cmd; \
 		chmod +x bin/console; sync; \
     fi
+
+# add bash
+RUN apk add --no-cache bash
 
 # Dev image
 FROM app_php AS app_php_dev
