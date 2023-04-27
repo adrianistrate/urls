@@ -6,6 +6,7 @@ use App\Repository\WebpageParameterRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WebpageParameterRepository::class)]
+#[ORM\Index(columns: ['parameter'], name: 'parameter_idx', options: ['lengths' => ['parameter' => 768]])]
 class WebpageParameter
 {
     #[ORM\Id]
@@ -16,7 +17,7 @@ class WebpageParameter
     #[ORM\ManyToOne(inversedBy: 'webpageParameters')]
     private ?Webpage $webpage = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 1785, nullable: true)]
     private ?string $parameter = null;
 
     #[ORM\Column(length: 255)]

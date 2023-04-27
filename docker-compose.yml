@@ -73,6 +73,9 @@ services:
       - '3306:3306'
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
+    command: ['mysqld', '--default-authentication-plugin=mysql_native_password']
+    volumes:
+      - ./scripts/alexa-domains.txt:/var/lib/mysql-files/alexa-domains.txt
 ###< doctrine/doctrine-bundle ###
 
 volumes:

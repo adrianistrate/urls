@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WebpageRepository::class)]
+#[ORM\Index(columns: ['domain'], name: 'domain_idx')]
+#[ORM\Index(columns: ['pathname'], name: 'pathname_idx', options: ['lengths' => ['pathname' => 768]])]
 class Webpage
 {
     #[ORM\Id]
@@ -15,10 +17,10 @@ class Webpage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 253, nullable: false)]
     private ?string $domain = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 1788, nullable: true)]
     private ?string $pathname = null;
 
     #[ORM\OneToMany(mappedBy: 'webpage', targetEntity: WebpageParameter::class)]

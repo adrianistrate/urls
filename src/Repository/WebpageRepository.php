@@ -39,6 +39,47 @@ class WebpageRepository extends ServiceEntityRepository
         }
     }
 
+    public function fetchByUrlData(?string $domain, ?string $pathname, ?array $queryParams): ?Webpage
+    {
+        $qb = $this->createQueryBuilder('w');
+
+        if ($domain) {
+            $qb
+                ->andWhere('w.domain = :domain')
+                ->setParameter('domain', $domain);
+        }
+
+        if ($pathname) {
+            $qb
+                ->andWhere('w.pathname = :pathname')
+                ->setParameter('pathname', $pathname);
+        }
+
+        if ($queryParams) {
+            $qb
+                ->join('w.webpageParameters', 'wp')
+                ->andWhere('wp.parameter IN (:queryParams)')
+                ->setParameter('queryParams', $queryParams)
+                ->groupBy('w.id')
+                ->having('COUNT(DISTINCT wp.parameter) = :queryParamsCount')
+                ->setParameter('queryParamsCount', count($queryParams));
+        }
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public
+    function fetchRandom(): ?Webpage
+    {
+        return $this->createQueryBuilder('w')
+            ->orderBy('RAND()')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Webpage[] Returns an array of Webpage objects
 //     */
