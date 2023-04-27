@@ -1,7 +1,0 @@
-- URLS can be 2048 characters long
-- the overall domain name, including subdomain + actual domain name + TLD, can be 253 characters long
-- pathname can be 2048 - 253 - 7 (worst case scenario http://) = 1788 characters long, worst case scenario
-- parameter can be 2048 - 253 - 7 - 3 (?, =, and 1 min character for parameter val) = 1785 characters long, worst case scenario
-
-- https://stackoverflow.com/questions/10552665/names-and-maximum-lengths-of-the-parts-of-a-url
-- 3072 bytes can fit 768 characters, worst case scenario
