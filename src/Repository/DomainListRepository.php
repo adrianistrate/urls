@@ -39,6 +39,17 @@ class DomainListRepository extends ServiceEntityRepository
         }
     }
 
+    public function getDomains(int $offset, int $maxResults): array
+    {
+        $query = $this->createQueryBuilder('d')
+            ->select('d.domain')
+            ->setFirstResult($offset)
+            ->setMaxResults($maxResults)
+            ->getQuery();
+
+        return $query->getSingleColumnResult();
+    }
+
 //    /**
 //     * @return DomainList[] Returns an array of DomainList objects
 //     */
